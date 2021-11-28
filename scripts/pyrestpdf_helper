@@ -1,0 +1,90 @@
+#!/usr/bin/env python3
+
+import sys
+import argparse
+import json
+from urllib import request
+from base64 import b64encode
+
+
+# HTTP verbs
+def post(url, json_str, custom_headers=None):
+    req = request.Request(url, method="POST")
+    req.add_header("Content-Type", "application/json")
+    if custom_headers:
+        for cn, cv in custom_headers.items():
+            req.add_header(cn, cv)
+    return request.urlopen(req, data=json.dumps(json_str).encode())
+
+
+def get(url, custom_headers=None):
+    req = request.Request(url, method="GET")
+    req.add_header("Content-Type", "application/json")
+    if custom_headers:
+        for cn, cv in custom_headers.items():
+            req.add_header(cn, cv)
+    return request.urlopen(req)
+
+
+# Commands
+def upload_command(args):
+    with open(args.path, "rb") as pdf_file:
+        f = pdf_file.read()
+    r = post(
+        args.address + ("pdf-template" if args.address[-1] == "/" else "/pdf-template"),
+        {"file": b64encode(f).decode()},
+        custom_headers={"Dumb-Token": f"Bearer {args.token}"},
+    )
+    return json.loads(r.read().decode())["id"]
+
+
+def get_command(args):
+    r = get(
+        args.address + ("pdf-template/" if args.address[-1] == "/" else "/pdf-template/") + str(args.id),
+        custom_headers={"Dumb-Token": f"Bearer {args.token}"},
+    )
+    return json.loads(r.read().decode())
+
+
+def generate_command(args):
+    r = post(
+        args.address + ("generated-pdf" if args.address[-1] == "/" else "/generated-pdf"),
+        {"template_id": args.id, "works": args.json},
+        custom_headers={"Dumb-Token": f"Bearer {args.token}"},
+    )
+    return json.loads(r.read().decode())["file"]
+
+
+# Main
+def main(argv=None):
+
+    parser = argparse.ArgumentParser(description="pyrestpdf_helper")
+    subparsers = parser.add_subparsers(help="sub-command help", dest="command")  # dest needed to identify subcommand
+
+    parser_upload = subparsers.add_parser("upload", help="upload template help")
+    parser_upload.add_argument("address", metavar="ADDRESS")
+    parser_upload.add_argument("token", metavar="TOKEN")
+    parser_upload.add_argument("path", metavar="PATH")
+
+    parser_get = subparsers.add_parser("get", help="get template help")
+    parser_get.add_argument("address", metavar="ADDRESS")
+    parser_get.add_argument("token", metavar="TOKEN")
+    parser_get.add_argument("id", metavar="ID")
+
+    parser_generate = subparsers.add_parser("generate", help="generate from template help")
+    parser_generate.add_argument("address", metavar="ADDRESS")
+    parser_generate.add_argument("token", metavar="TOKEN")
+    parser_generate.add_argument("id", metavar="ID")
+    parser_generate.add_argument("json", metavar="JSON")
+
+    args = parser.parse_args()
+
+    if not args.command:
+        parser.print_help()
+        return
+    print({"upload": upload_command, "get": get_command, "generate": generate_command}[args.command](args))
+    return
+
+
+if __name__ == "__main__":
+    sys.exit(main())
