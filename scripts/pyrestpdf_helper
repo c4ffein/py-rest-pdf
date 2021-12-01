@@ -59,19 +59,19 @@ def generate_command(args):
 def main(argv=None):
 
     parser = argparse.ArgumentParser(description="pyrestpdf_helper")
-    subparsers = parser.add_subparsers(help="sub-command help", dest="command")  # dest needed to identify subcommand
+    subparsers = parser.add_subparsers(help="sub-command", dest="command")  # dest needed to identify subcommand
 
-    parser_upload = subparsers.add_parser("upload", help="upload template help")
+    parser_upload = subparsers.add_parser("upload", help="upload template")
     parser_upload.add_argument("address", metavar="ADDRESS")
     parser_upload.add_argument("token", metavar="TOKEN")
     parser_upload.add_argument("path", metavar="PATH")
 
-    parser_get = subparsers.add_parser("get", help="get template help")
+    parser_get = subparsers.add_parser("get", help="get template")
     parser_get.add_argument("address", metavar="ADDRESS")
     parser_get.add_argument("token", metavar="TOKEN")
     parser_get.add_argument("id", metavar="ID")
 
-    parser_generate = subparsers.add_parser("generate", help="generate from template help")
+    parser_generate = subparsers.add_parser("generate", help="generate from template")
     parser_generate.add_argument("address", metavar="ADDRESS")
     parser_generate.add_argument("token", metavar="TOKEN")
     parser_generate.add_argument("id", metavar="ID")
