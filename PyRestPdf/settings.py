@@ -9,7 +9,7 @@ For the full list of settings and their values, see https://docs.djangoproject.c
 from pathlib import Path
 from os import getenv
 
-from samurai.settings import get_env_databases, get_env_email, get_env_debug_secret_hosts
+from samurai.settings import get_env_databases, get_env_debug_secret_hosts
 
 BASE_DIR = Path(__file__).resolve().parent.parent  # Build paths inside the project like this: BASE_DIR / 'subdir'
 
