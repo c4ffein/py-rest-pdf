@@ -9,3 +9,4 @@ PyPDF2==1.26.0
 reportlab==3.5.66
 Pillow==8.1.0
 django-samurai==0.1.0
+bleach==4.1.0
