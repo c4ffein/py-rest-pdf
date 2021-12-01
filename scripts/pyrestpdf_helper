@@ -49,7 +49,7 @@ def get_command(args):
 def generate_command(args):
     r = post(
         args.address + ("generated-pdf" if args.address[-1] == "/" else "/generated-pdf"),
-        {"template_id": args.id, "works": args.json},
+        {"template_id": args.id, "works": json.loads(args.json)},
         custom_headers={"Dumb-Token": f"Bearer {args.token}"},
     )
     return json.loads(r.read().decode())["file"]
