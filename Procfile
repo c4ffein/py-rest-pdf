@@ -1,2 +1,2 @@
 release: ./startup.sh
-web: gunicorn wsgi
+web: gunicorn PyRestPdf.wsgi
