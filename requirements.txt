@@ -10,3 +10,6 @@ reportlab==3.5.66
 Pillow==8.1.0
 django-samurai==0.1.1
 bleach==4.1.0
+# PROD
+psycopg2==2.9.2
+gunicorn==20.1.0
