@@ -8,7 +8,7 @@ typing_extensions==4.0.0
 PyPDF2==1.26.0
 reportlab==3.5.66
 Pillow==8.1.0
-django-samurai==0.1.1
+django-samurai==0.1.3
 bleach==4.1.0
 # PROD
 psycopg2==2.9.2
