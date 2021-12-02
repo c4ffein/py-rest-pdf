@@ -1,5 +1,5 @@
 import io
-from base64 import b64encode, b64decode
+from base64 import b64decode
 
 from PyPDF2 import PdfFileWriter, PdfFileReader
 from reportlab.pdfgen import canvas
@@ -55,4 +55,4 @@ def gen_pdf(template, data):
     output_pdf.addPage(page)
     output_pdf.write(out_io)
     out_io.seek(0)
-    return b64encode(out_io.read())
+    return out_io.read()
