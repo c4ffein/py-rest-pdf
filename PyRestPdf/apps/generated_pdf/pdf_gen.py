@@ -37,11 +37,11 @@ def gen_pdf(template, data):
     packet = io.BytesIO()
     c = canvas.Canvas(packet, pagesize=letter)
 
-    for s in data.get("the_strings", []):
+    for s in data.get("strings", []):
         c.drawString(*s)
-    for p in data.get("the_paragraphs", []):
+    for p in data.get("paragraphs", []):
         draw_paragraph(c, *p)  # max_height doesn't seem to work but who cares
-    for s in data.get("the_signatures", []):
+    for s in data.get("signatures", []):
         canvased_signature(c, *s)
 
     c.showPage()
